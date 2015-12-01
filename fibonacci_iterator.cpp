@@ -65,11 +65,34 @@ bool operator!= (const fibonacci_iterator<Integer> & left,
 	return !(left == right);
 }
 
-int main()
-{
-	typedef boost::multiprecision::cpp_int Integer;
+void usage(const char *invocation) {
+	std::cerr << "usage: " << invocation << " <n begin> [<n end>]\n"
+		"with <n end> greater than <n begin>.\n";
+}
 
-    Integer i = *fibonacci_iterator<Integer>(200) % 10;
-	return static_cast<int>(i);
+int main(int argc, char *argv[])
+{
+	if (argc < 2 || argc > 3) {
+		assert(argc == 1);
+		usage(argv[0]);
+		return 1;
+	}
+
+	const int n1 = std::atoi(argv[1]);
+	if (n1 < 0) {
+		usage(argv[0]);
+		return 2;
+	}
+
+	const int n2 = argc > 2 ? std::atoi(argv[2]) : n1 + 1;
+	if (n2 <= n1) {
+		usage(argv[0]);
+		return 3;
+	}
+
+	typedef boost::multiprecision::cpp_int Integer;
+	std::copy_n(fibonacci_iterator<Integer>(n1), 
+		        n2 - n1, 
+		        std::ostream_iterator<Integer>(std::cout, "\n"));
 }
 
