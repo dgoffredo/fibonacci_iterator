@@ -73,7 +73,7 @@ void usage(const char *invocation) {
 int main(int argc, char *argv[])
 {
 	if (argc < 2 || argc > 3) {
-		assert(argc == 1);
+		assert(argc > 0);
 		usage(argv[0]);
 		return 1;
 	}
